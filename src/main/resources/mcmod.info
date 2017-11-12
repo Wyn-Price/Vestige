@@ -1,0 +1,16 @@
+[
+{
+  "modid": "vestige",
+  "name": "Vestige",
+  "description": "A mod about life, the universe and everything",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Wyn Price"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
