@@ -16,11 +16,11 @@ public class ItemAtom extends Item
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) 
 	{
-		return stack.getMetadata() + 1 <= 118 ? VestigeChemistry.getNameOfElement(stack.getMetadata() + 1) : super.getItemStackDisplayName(stack);
+		return stack.getMetadata() <= 118 ? VestigeChemistry.getNameOfElement(stack.getMetadata()) : super.getItemStackDisplayName(stack);
 	}
 	
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(TextFormatting.GRAY + new TextComponentTranslation("element.mass").getUnformattedText() + ": " + VestigeChemistry.getElementMass(stack.getMetadata() + 1));
+		tooltip.add(TextFormatting.GRAY + new TextComponentTranslation("element.mass").getUnformattedText() + ": " + VestigeChemistry.getElementMass(stack.getMetadata()));
 	}
 }

@@ -4,3 +4,4 @@ item.atom.name=Unknown Atom
 
 misc#
 element.mass=Mass
+atom.nonexist=The Atom that cannot exist

@@ -11,6 +11,7 @@ import com.wynprice.vestige.render.AtomRendererHelper.TileEntityHelper;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.ForgeHooksClient;
 
 @SuppressWarnings("serial")
@@ -83,13 +84,13 @@ public class VestigeChemistry
 		for(int i = 1; i < imageSizes.size(); i++)
 		{
 			graphics.setColor(Color.BLACK);
-			graphics.setStroke(new BasicStroke(5f));
+			graphics.setStroke(new BasicStroke(3f));
 			graphics.drawOval((size / 2) - (imageSizes.get(i) / 2), (size / 2) - (imageSizes.get(i) / 2), imageSizes.get(i) , imageSizes.get(i));
 			graphics.setStroke(new BasicStroke(1f));
 			graphics.setColor(Color.YELLOW);
 			for(int k = 0; k < electrons.get(i); k++)
-				graphics.fillOval((int) Math.floor(imageSizes.get(i) / 2 * Math.cos(((Math.PI*2) / electrons.get(i)) * k) + (size / 2) - 4), 
-						(int) Math.floor(imageSizes.get(i) / 2 * Math.sin(((Math.PI*2) / electrons.get(i)) * k) + (size / 2) - 4), 10, 10);
+				graphics.fillOval((int) Math.floor(imageSizes.get(i) / 2 * Math.cos(((Math.PI*2) / electrons.get(i)) * k) + (size / 2) - 3.5d), 
+						(int) Math.floor(imageSizes.get(i) / 2 * Math.sin(((Math.PI*2) / electrons.get(i)) * k) + (size / 2) - 3.5d), 7, 7);
 		}
 		int totalElectrons = 0;
 		for(int i : electrons)
@@ -101,7 +102,7 @@ public class VestigeChemistry
 	
 	public static String getNameOfElement(int electrons)
 	{
-		return elementNames.length < electrons ? "" : capatilizeFirstLetter(elementNames[electrons - 1]) + " (%s)".replace("%s", capatilizeFirstLetter(elementSymbols[electrons - 1]));
+		return elementNames.length < electrons ? "" : ( electrons == 0 ? new TextComponentTranslation("atom.nonexist").getUnformattedText() : capatilizeFirstLetter(elementNames[electrons - 1]) + " (%s)".replace("%s", capatilizeFirstLetter(elementSymbols[electrons - 1])));
 	}
 	
 	public static String getElementMass(int electrons)
@@ -121,7 +122,7 @@ public class VestigeChemistry
 		
 	public static ResourceLocation registerAtom(int electrons)
 	{
-		new Atom(electrons).addBufferData();
+		Atom.getAtom(electrons).addBufferData();
 		drawImage();
 		ForgeHooksClient.registerTESRItemStack(VestigeItems.ATOM, electrons, TileEntityHelper.class);
 		AtomBakedModel.INITILIZED_ATOMS.add(electrons);

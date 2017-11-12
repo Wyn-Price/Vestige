@@ -1,12 +1,23 @@
 package com.wynprice.vestige.calculation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Atom 
 {
+	private static final HashMap<Integer, Atom> ATOMS = new HashMap<>();
+	
+	public static Atom getAtom(int electrons)
+	{
+		if(!ATOMS.containsKey(electrons))
+			ATOMS.put(electrons, new Atom(electrons));
+		return ATOMS.get(electrons);
+	}
+	
 	private ArrayList<Shell> shells = new ArrayList<Shell>();
 	private int e;
-	public Atom(int totalElectrons)
+	
+	private Atom(int totalElectrons)
 	{
 		shellNoticableChange.clear();
 		shellNoticableChange.add(18);
@@ -136,5 +147,9 @@ public class Atom
 	public void addBufferData() {
 		for(Shell s : shells)
 			VestigeChemistry.addData(s.getPosition(), s.getAdded(), shells.size());
+	}
+	
+	public ArrayList<Shell> getShells() {
+		return shells;
 	}
 }

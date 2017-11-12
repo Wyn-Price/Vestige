@@ -2,6 +2,7 @@ package com.wynprice.vestige.calculation;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.EmptyStackException;
 import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
@@ -32,17 +33,18 @@ public class AtomImageWriter
 		ATOM_RESOURCELOCATION_MAP.put(electrons, Minecraft.getMinecraft().getTextureManager().getDynamicTextureLocation(String.valueOf(electrons), new DynamicTexture(bufferedImage)));
 	}
 	
+	private static final ResourceLocation EMPTY = Minecraft.getMinecraft().getTextureManager().getDynamicTextureLocation("empty", new DynamicTexture(new BufferedImage(100, 10, BufferedImage.TYPE_INT_ARGB)));
 	
 	
 	public static ResourceLocation getLocation(int electrons)
 	{
 		if(!ATOM_RESOURCELOCATION_MAP.containsKey(electrons))
 		{
-			new Atom(electrons).addBufferData();
+			Atom.getAtom(electrons).addBufferData();
 			VestigeChemistry.drawImage();
 		}
-		if(electrons <= 0)
-			return new ResourceLocation("missingno");
+		if(electrons <= 0 || ATOM_RESOURCELOCATION_MAP.get(electrons) == null)
+			return EMPTY;
 		return ATOM_RESOURCELOCATION_MAP.get(electrons);
 	}
 }

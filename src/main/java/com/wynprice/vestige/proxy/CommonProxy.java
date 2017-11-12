@@ -1,6 +1,7 @@
 package com.wynprice.vestige.proxy;
 
 import com.wynprice.vestige.VestigeItems;
+import com.wynprice.vestige.elementbehaviour.GroupOneWater;
 import com.wynprice.vestige.events.BakeSpecialRenderEvent;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -12,7 +13,14 @@ public class CommonProxy
 {
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		MinecraftForge.EVENT_BUS.register(new BakeSpecialRenderEvent());
+		
+		Object[] objects = {
+				new BakeSpecialRenderEvent(),
+				new GroupOneWater()
+		};
+		for(Object o : objects)
+		MinecraftForge.EVENT_BUS.register(o);
+
 		
 		VestigeItems.preInit();
 	}
