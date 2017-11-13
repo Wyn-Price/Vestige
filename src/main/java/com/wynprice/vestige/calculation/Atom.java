@@ -76,6 +76,16 @@ public class Atom
 		
 	}
 	
+	public Shell getOuterShell()
+	{
+		return shells.get(shells.size() - 1);
+	}
+	
+	public int getOuterShellElecrons()
+	{
+		return getOuterShell().getAdded();
+	}
+	
 	private void createCustomShells(Shell shell) 
 	{
 		int k = ((shell.getMax() - 2) / 4) - 4;

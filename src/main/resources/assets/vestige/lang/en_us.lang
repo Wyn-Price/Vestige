@@ -2,6 +2,11 @@
 #items
 item.atom.name=Unknown Atom
 
-misc#
+#commands
+command.element.usage=Usage: /element <element> [count]
+command.element.notfound=Element %s does not exist
+command.element.success=Given %s x %s to %s
+
+#misc
 element.mass=Mass
 atom.nonexist=The Atom that cannot exist

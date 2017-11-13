@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = Vestige.MODID, name = Vestige.MODNAME, version = Vestige.VERSION)
 public class Vestige
@@ -41,4 +42,10 @@ public class Vestige
     {
     	proxy.postInit(event);
     }
+    
+    @EventHandler
+	public void serverLoad(FMLServerStartingEvent event)
+	{
+    	event.registerServerCommand(new CommandElement());
+	}
 }
