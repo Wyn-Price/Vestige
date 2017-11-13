@@ -59,19 +59,18 @@ public class ElementExplosion extends Explosion {
 	public void doExplosionA() 
 	{
 		Set<BlockPos> set = Sets.<BlockPos>newHashSet();
-        int i = 16;
 
-        for (int j = 0; j < 16; ++j)
+        for (int j = 0; j < (int)this.size; ++j)
         {
-            for (int k = 0; k < 16; ++k)
+            for (int k = 0; k < (int)this.size; ++k)
             {
-                for (int l = 0; l < 16; ++l)
+                for (int l = 0; l < (int)this.size; ++l)
                 {
-                    if (j == 0 || j == 15 || k == 0 || k == 15 || l == 0 || l == 15)
+                    if ((j == 0 || j == (int)this.size - 1 || k == 0 || k == (int)this.size - 1 || l == 0 || l == (int)this.size - 1))
                     {
-                        double d0 = (double)((float)j / 15.0F * 2.0F - 1.0F);
-                        double d1 = (double)((float)k / 15.0F * 2.0F - 1.0F);
-                        double d2 = (double)((float)l / 15.0F * 2.0F - 1.0F);
+                        double d0 = (double)((float)j / ((int)this.size - 1) * 2.0F - 1.0F);
+                        double d1 = (double)((float)k / ((int)this.size - 1) * 2.0F - 1.0F);
+                        double d2 = (double)((float)l / ((int)this.size - 1) * 2.0F - 1.0F);
                         double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
                         d0 = d0 / d3;
                         d1 = d1 / d3;
@@ -80,14 +79,17 @@ public class ElementExplosion extends Explosion {
                         double d4 = this.x;
                         double d6 = this.y;
                         double d8 = this.z;
+                       
 
                         for (float f1 = 0.3F; f > 0.0F; f -= 0.22500001F)
                         {
                             BlockPos blockpos = new BlockPos(d4, d6, d8);
+                            if(new Vec3d(d4, d6, d8).distanceTo(new Vec3d(this.x, this.y, this.z)) > this.size * 0.5f && this.world.rand.nextInt(5) != 0)
+                            	continue;
                             IBlockState iblockstate = this.world.getBlockState(blockpos);
 
                             if (iblockstate.getMaterial() != Material.AIR)
-                                f -= 0.3F;
+                                f -= 0.2F;
 
                             if (f > 0.0F )
                                 set.add(blockpos);
@@ -167,12 +169,8 @@ public class ElementExplosion extends Explosion {
 		explosion.doExplosionA();
     	explosion.doExplosionB(true);
     	for (EntityPlayer entityplayer : world.playerEntities)
-        {
             if (entityplayer.getDistanceSq(pos.x, pos.y, pos.z) < 4096.0D)
-            {
                 ((EntityPlayerMP)entityplayer).connection.sendPacket(new SPacketExplosion(pos.x, pos.y, pos.z, strength, explosion.getAffectedBlockPositions(), (Vec3d)explosion.getPlayerKnockbackMap().get(entityplayer)));
-            }
-        }
 	}
 	
 	
