@@ -11,9 +11,14 @@ public class Shell
 	public ArrayList<Integer> customSubHolding = new ArrayList<Integer>();
 
 	
-	public int getMax()
+	public int getInternalMax()
 	{
 		return 6 + (shellPosition * 4);
+	}
+	
+	public int getMax()
+	{
+		return 2 * (shellPosition * shellPosition);
 	}
 	
 	public int getAdded()

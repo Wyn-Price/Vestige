@@ -66,11 +66,7 @@ public class AtomBakedModel implements IBakedModel
 	
 	public static int damage;
 	public final static ArrayList<Integer> INITILIZED_ATOMS = new ArrayList<Integer>();
-	static
-	{
-		for(int i = 0; i <= 118; i++)
-			INITILIZED_ATOMS.add(i);
-	}
+	
 	@Override
 	public ItemOverrideList getOverrides() 
 	{

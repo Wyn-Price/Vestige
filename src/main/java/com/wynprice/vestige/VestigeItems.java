@@ -18,12 +18,12 @@ public class VestigeItems
 	
 	public static void regRenders()
 	{
-		regRender(ATOM);
+		regRenderAtom(ATOM);
 	}
 	
-	private static void regRender(Item item)
+	private static void regRenderAtom(Item item)
 	{
-		for(int i = 0; i < 65535; i++)
+		for(int i = 0; i < 65535 && i < ItemAtom.ATOM_LIMIT; i++)
 			ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName(), "inventory"));
 	}
 }

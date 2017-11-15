@@ -1,14 +1,12 @@
 package com.wynprice.vestige.elementbehaviour;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentProtection;
@@ -24,6 +22,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.IFluidBlock;
 
 public class ElementExplosion extends Explosion {
 
@@ -87,9 +86,10 @@ public class ElementExplosion extends Explosion {
                             if(new Vec3d(d4, d6, d8).distanceTo(new Vec3d(this.x, this.y, this.z)) > this.size * 0.5f && this.world.rand.nextInt(5) != 0)
                             	continue;
                             IBlockState iblockstate = this.world.getBlockState(blockpos);
-
-                            if (iblockstate.getMaterial() != Material.AIR)
-                                f -= 0.2F;
+                            float f2 = iblockstate.getBlock().getExplosionResistance(world, blockpos, (Entity)null, this);
+                            if (iblockstate.getMaterial() != Material.AIR && !(iblockstate.getBlock() instanceof IFluidBlock) && !(iblockstate.getBlock() instanceof BlockLiquid))
+                                f -= f2  * 0.1F;
+                            
 
                             if (f > 0.0F )
                                 set.add(blockpos);
@@ -111,7 +111,6 @@ public class ElementExplosion extends Explosion {
         int j2 = MathHelper.floor(this.z - (double)f3 - 1.0D);
         int j1 = MathHelper.floor(this.z + (double)f3 + 1.0D);
         List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this.exploder, new AxisAlignedBB((double)k1, (double)i2, (double)j2, (double)l1, (double)i1, (double)j1));
-        net.minecraftforge.event.ForgeEventFactory.onExplosionDetonate(this.world, this, list, f3);
         Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
 
         for (int k2 = 0; k2 < list.size(); ++k2)

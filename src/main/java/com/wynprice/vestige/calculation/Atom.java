@@ -1,24 +1,55 @@
 package com.wynprice.vestige.calculation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
-public class Atom 
+import com.wynprice.vestige.calculation.molecule.Molecule;
+
+public class Atom
 {
 	private static final HashMap<Integer, Atom> ATOMS = new HashMap<>();
+	private static final HashMap<Integer, ArrayList<Atom>> OUTERLAYER_LIST = new HashMap<>();
 	
 	public static Atom getAtom(int electrons)
 	{
 		if(!ATOMS.containsKey(electrons))
-			ATOMS.put(electrons, new Atom(electrons));
+			initAtom(electrons);
 		return ATOMS.get(electrons);
 	}
 	
+	public static void initAtom(int electrons)
+	{
+		Atom atom = new Atom(electrons);
+		ATOMS.put(electrons, atom);
+		if(atom.shells.size() == 0)
+			return;
+		addAtomToMap(OUTERLAYER_LIST, atom.getOuterShellElecrons(), atom);
+	}
+	
+	public static ArrayList<Atom> getAtomsWithLastShell(int shellElectrons){return getAtomListFromMap(OUTERLAYER_LIST, shellElectrons);}
+	
+	private static void addAtomToMap(HashMap<Integer, ArrayList<Atom>> map, int electrons, Atom atom)
+	{
+		if(!map.containsKey(electrons))
+			map.put(electrons, new ArrayList<>());
+		map.get(electrons).add(atom);
+	}
+	
+	private static ArrayList<Atom> getAtomListFromMap(HashMap<Integer, ArrayList<Atom>> map, int electrons)
+	{
+		return map.get(electrons) == null ? new ArrayList<>() : new ArrayList<>(map.get(electrons));
+	}
+	
+	
 	private ArrayList<Shell> shells = new ArrayList<Shell>();
 	private int e;
+	private final int totalElectrons;
 	
 	private Atom(int totalElectrons)
 	{
+		this.totalElectrons = totalElectrons;
 		shellNoticableChange.clear();
 		shellNoticableChange.add(18);
 		k = 0;
@@ -62,7 +93,7 @@ public class Atom
 				if(prev.hasF())
 				{
 					addF(i-1, 14);
-					if(shells.get(i - 2).getMax() > 14)
+					if(shells.get(i - 2).getInternalMax() > 14)
 						createCustomShells(shells.get(i - 2));
 				}
 			}
@@ -83,16 +114,18 @@ public class Atom
 	
 	public int getOuterShellElecrons()
 	{
+		if(shells.size() == 0)
+			return 0;
 		return getOuterShell().getAdded();
 	}
 	
 	private void createCustomShells(Shell shell) 
 	{
-		int k = ((shell.getMax() - 2) / 4) - 4;
+		int k = ((shell.getInternalMax() - 2) / 4) - 4;
 		for(int j = 0; shell.customSubs.size() < k; j++)
 			shell.createNewSub((j * 4) + 18);
 		
-		addToCustomShell(shell, shell.getMax());
+		addToCustomShell(shell, shell.getInternalMax());
 	}
 	
 	private ArrayList<Integer> shellNoticableChange = new ArrayList<Integer>();
@@ -105,7 +138,7 @@ public class Atom
 			shellNoticableChange.add(amount);
 		for(int i = 0; i < k; i++)
 		{
-			if(shells.get(shell.getPosition() - i).getMax() > shellNoticableChange.get(i))
+			if(shells.get(shell.getPosition() - i).getInternalMax() > shellNoticableChange.get(i))
 			{
 				int n;
 				if(e <= shellNoticableChange.get(i))
@@ -162,4 +195,50 @@ public class Atom
 	public ArrayList<Shell> getShells() {
 		return shells;
 	}
+	
+	public String getElementSymbol()
+	{
+		return VestigeChemistry.capatilizeFirstLetter(VestigeChemistry.ELEMENT_SYMBOLS[totalElectrons - 1]);
+	}
+	
+	public int getSize() {
+		return shells.size();
+	}
+	
+	public int getTotalElectrons() {
+		return totalElectrons;
+	}
+	
+	public boolean isTransitionMetal() //Does the atom exist in any of the normal groups
+	{
+		if(getOuterShellElecrons() != 2 || shells.size() < 3 || Atom.getAtom(totalElectrons - 1).getOuterShellElecrons() == 1)
+			return false;
+		return true;
+	}
+	
+	public boolean isDiatomic() //Seemingly no pattern to this, assume it stops at Iodine
+	{
+		return Arrays.asList(1, 7, 8, 9, 17, 35, 53).contains(totalElectrons);
+	}
+	
+	public Molecule asMolecule()
+	{
+		return new Molecule(this, 1);
+	}
+
+	public List<Integer> getSimpleIon()
+	{
+		if(isTransitionMetal()) return new ArrayList<>();
+		switch (getOuterShellElecrons()) {
+		case 1:return Arrays.asList(1);
+		case 2:return Arrays.asList(2);
+		case 3:return Arrays.asList(3);
+		case 4:return Arrays.asList(4, -4);
+		case 5:return Arrays.asList(-3);
+		case 6:return Arrays.asList(-2);
+		case 7:return Arrays.asList(-1);
+		}
+		return new ArrayList<>();
+	}
+	
 }

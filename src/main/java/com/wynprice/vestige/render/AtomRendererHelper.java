@@ -2,8 +2,10 @@ package com.wynprice.vestige.render;
 
 import com.wynprice.vestige.Vestige;
 import com.wynprice.vestige.VestigeItems;
+import com.wynprice.vestige.calculation.Atom;
 import com.wynprice.vestige.calculation.AtomImageWriter;
 import com.wynprice.vestige.calculation.VestigeChemistry;
+import com.wynprice.vestige.item.ItemAtom;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -55,7 +57,9 @@ public class AtomRendererHelper
 		long time = System.currentTimeMillis();
 		for(int i = 0; i <= 118; i++)
 			VestigeChemistry.registerAtom(i);
-		Vestige.LOGGER.info("Big bang achieved in just {} ms. Hello Universe", System.currentTimeMillis() - time);
+		for(int i = 0; i < ItemAtom.ATOM_LIMIT; i++)
+			Atom.getAtom(i);
+		Vestige.LOGGER.info("Big bang achieved in {} ms. Hello Universe", System.currentTimeMillis() - time);
 		
 	}
 }

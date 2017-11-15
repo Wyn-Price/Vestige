@@ -13,6 +13,8 @@ import net.minecraft.world.World;
 
 public class ItemAtom extends Item
 {
+	public static final int ATOM_LIMIT = 65535;
+	
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) 
 	{

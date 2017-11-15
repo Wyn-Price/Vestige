@@ -109,15 +109,18 @@ public class VestigeChemistry
 		
 	public static ResourceLocation registerAtom(int electrons)
 	{
-		Atom.getAtom(electrons).addBufferData();
-		drawImage();
-		ForgeHooksClient.registerTESRItemStack(VestigeItems.ATOM, electrons, TileEntityHelper.class);
-		AtomBakedModel.INITILIZED_ATOMS.add(electrons);
+		if(!AtomBakedModel.INITILIZED_ATOMS.contains(electrons))
+		{
+			Atom.getAtom(electrons).addBufferData();
+			drawImage();
+			ForgeHooksClient.registerTESRItemStack(VestigeItems.ATOM, electrons, TileEntityHelper.class);
+			AtomBakedModel.INITILIZED_ATOMS.add(electrons);
+		}
 		return AtomImageWriter.getLocation(electrons);
 		
 	}
 		
-	private static String capatilizeFirstLetter(String name)
+	public static String capatilizeFirstLetter(String name)
 	{
 		return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
 	}
