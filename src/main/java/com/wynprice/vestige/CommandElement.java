@@ -45,6 +45,8 @@ public class CommandElement extends CommandBase {
 				stack = new ItemStack(VestigeItems.ATOM, 1, Arrays.asList(VestigeChemistry.ELEMENT_NAMES).indexOf(args[0]) + 1);
 			else if(Arrays.asList(VestigeChemistry.ELEMENT_SYMBOLS).indexOf(args[0]) != -1)
 				stack = new ItemStack(VestigeItems.ATOM, 1, Arrays.asList(VestigeChemistry.ELEMENT_SYMBOLS).indexOf(args[0]) + 1);
+		if(args[0].equals("des"))
+			stack = new ItemStack(VestigeItems.ATOM, 1, 64823);
 		if(stack.isEmpty())
 			try {
 				stack = new ItemStack(VestigeItems.ATOM, 1, parseInt(args[0], 1, ItemAtom.ATOM_LIMIT));
