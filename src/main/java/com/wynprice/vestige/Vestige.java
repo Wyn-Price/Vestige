@@ -7,6 +7,7 @@ import com.wynprice.vestige.proxy.CommonProxy;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -24,6 +25,9 @@ public class Vestige
     
     @SidedProxy(clientSide = "com.wynprice.vestige.proxy.ClientProxy", serverSide = "com.wynprice.vestige.proxy.ServerProxy")
     public static CommonProxy proxy;
+    
+    @Instance(MODID)
+    public static Vestige instance;
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -47,5 +51,6 @@ public class Vestige
 	public void serverLoad(FMLServerStartingEvent event)
 	{
     	event.registerServerCommand(new CommandElement());
+    	event.registerServerCommand(new CommandCompound());
 	}
 }

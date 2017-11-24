@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import com.wynprice.vestige.VestigeItems;
 import com.wynprice.vestige.render.AtomBakedModel;
+import com.wynprice.vestige.render.AtomRendererHelper;
 import com.wynprice.vestige.render.AtomRendererHelper.TileEntityHelper;
 
 import net.minecraft.util.ResourceLocation;
@@ -113,7 +114,7 @@ public class VestigeChemistry
 		{
 			Atom.getAtom(electrons).addBufferData();
 			drawImage();
-			ForgeHooksClient.registerTESRItemStack(VestigeItems.ATOM, electrons, TileEntityHelper.class);
+			ForgeHooksClient.registerTESRItemStack(VestigeItems.ATOM, electrons, AtomRendererHelper.TileEntityHelper.class);
 			AtomBakedModel.INITILIZED_ATOMS.add(electrons);
 		}
 		return AtomImageWriter.getLocation(electrons);

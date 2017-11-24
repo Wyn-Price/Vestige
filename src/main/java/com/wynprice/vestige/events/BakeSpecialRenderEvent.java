@@ -4,6 +4,7 @@ import com.wynprice.vestige.Vestige;
 import com.wynprice.vestige.calculation.VestigeChemistry;
 import com.wynprice.vestige.render.AtomBakedModel;
 import com.wynprice.vestige.render.AtomRendererHelper;
+import com.wynprice.vestige.render.CompoundBakedModel;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -24,5 +25,7 @@ public class BakeSpecialRenderEvent
 			if(model.getResourceDomain().equals(Vestige.MODID))
 				if(model.getResourcePath().equals("atom"))
 					e.getModelRegistry().putObject(model, new AtomBakedModel(e.getModelRegistry().getObject(model)));
+				else if(model.getResourcePath().equals("compound"))
+					e.getModelRegistry().putObject(model, new CompoundBakedModel(e.getModelRegistry().getObject(model)));
 	 }
 }

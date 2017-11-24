@@ -52,8 +52,10 @@ public class AtomRendererHelper
 	
 	public static void preInit()
 	{
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityHelper.class, new ItemRendererHelper());
 		Vestige.LOGGER.info("Initializing the big bang");
+		ClientRegistry.bindTileEntitySpecialRenderer(AtomRendererHelper.TileEntityHelper.class, new AtomRendererHelper.ItemRendererHelper());
+		ClientRegistry.bindTileEntitySpecialRenderer(CompoundRendererHelper.TileEntityHelper.class, new CompoundRendererHelper.ItemRendererHelper());
+		ForgeHooksClient.registerTESRItemStack(VestigeItems.COMPOUND, 0, CompoundRendererHelper.TileEntityHelper.class);
 		long time = System.currentTimeMillis();
 		for(int i = 0; i <= 118; i++)
 			VestigeChemistry.registerAtom(i);

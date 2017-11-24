@@ -20,11 +20,11 @@ public class GroupOneWater extends BaseItemEntityReaction
 	@Override
 	protected boolean isAtomAccepted(int damage) 
 	{
-		return Atom.getAtom(damage).getOuterShellElecrons() == 1;
+		return Atom.getAtom(damage).getOuterShellElecrons() == 1 && damage != 1;
 	}
 	
 	@Override
-	public void onEntityItemUsed(World world, Vec3d pos, ItemStack stack, EntityItem item) 
+	public void onEntityItemTick(World world, Vec3d pos, ItemStack stack, EntityItem item) 
 	{
 		if(!world.isRemote && item.isWet() && !item.isDead)
 		{

@@ -14,9 +14,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 
 public abstract class BaseItemEntityReaction 
 {
-	public abstract void onEntityItemUsed(World world, Vec3d pos, ItemStack stack, EntityItem item);
+	public abstract void onEntityItemTick(World world, Vec3d pos, ItemStack stack, EntityItem item);
 	
-	protected abstract boolean isAtomAccepted(int damage);
+	protected abstract boolean isAtomAccepted(int electron);
 	
 	@SubscribeEvent
 	public void onEntityUpdate(WorldTickEvent event)
@@ -24,6 +24,6 @@ public abstract class BaseItemEntityReaction
 		ArrayList<Entity> entityList = new ArrayList<>(event.world.loadedEntityList);
 		for(Entity entity : entityList)
 			if(entity instanceof EntityItem && ((EntityItem)entity).getItem().getItem() instanceof ItemAtom && isAtomAccepted(((EntityItem)entity).getItem().getMetadata()))
-				onEntityItemUsed(event.world, entity.getPositionVector(), ((EntityItem)entity).getItem(), (EntityItem) entity);
+				onEntityItemTick(event.world, entity.getPositionVector(), ((EntityItem)entity).getItem(), (EntityItem) entity);
 	}
 }
